@@ -55,6 +55,12 @@ export const es = {
       aliases: ["code", "pre"],
       group: "Bloques básicos",
     },
+    page_break: {
+      title: "Salto de página",
+      subtext: "Separador de página",
+      aliases: ["page", "break", "separator", "salto", "separador"],
+      group: "Bloques básicos",
+    },
     table: {
       title: "Tabla",
       subtext: "Tabla con celdas editables",
@@ -122,6 +128,9 @@ export const es = {
     bulletListItem: "Lista",
     numberedListItem: "Lista",
     checkListItem: "Lista",
+    new_comment: "Escribe un comentario...",
+    edit_comment: "Editar comentario...",
+    comment_reply: "Agregar comentario...",
   },
   file_blocks: {
     image: {
@@ -266,6 +275,9 @@ export const es = {
     align_justify: {
       tooltip: "Justificar texto",
     },
+    comment: {
+      tooltip: "Añadir comentario",
+    },
   },
   file_panel: {
     upload: {
@@ -303,6 +315,18 @@ export const es = {
     form: {
       title_placeholder: "Editar título",
       url_placeholder: "Editar URL",
+    },
+  },
+  comments: {
+    actions: {
+      add_reaction: "Agregar reacción",
+      resolve: "Resolver",
+      edit_comment: "Editar comentario",
+      delete_comment: "Eliminar comentario",
+      more_actions: "Más acciones",
+    },
+    reactions: {
+      reacted_by: "Reaccionado por",
     },
   },
   generic: {

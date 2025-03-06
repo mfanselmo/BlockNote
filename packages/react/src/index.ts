@@ -15,6 +15,7 @@ export * from "./blocks/FileBlockContent/helpers/toExternalHTML/FigureWithCaptio
 export * from "./blocks/FileBlockContent/helpers/toExternalHTML/LinkWithCaption.js";
 export * from "./blocks/FileBlockContent/useResolveUrl.js";
 export * from "./blocks/ImageBlockContent/ImageBlockContent.js";
+export * from "./blocks/PageBreakBlockContent/getPageBreakReactSlashMenuItems.js";
 export * from "./blocks/VideoBlockContent/VideoBlockContent.js";
 
 export * from "./components/FormattingToolbar/DefaultButtons/BasicTextStyleButton.js";
@@ -93,6 +94,7 @@ export * from "./hooks/useEditorChange.js";
 export * from "./hooks/useEditorContentOrSelectionChange.js";
 export * from "./hooks/useEditorForceUpdate.js";
 export * from "./hooks/useEditorSelectionChange.js";
+export * from "./hooks/useFocusWithin.js";
 export * from "./hooks/usePrefersColorScheme.js";
 export * from "./hooks/useSelectedBlocks.js";
 

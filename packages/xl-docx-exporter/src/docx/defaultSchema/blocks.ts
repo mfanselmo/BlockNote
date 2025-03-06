@@ -3,20 +3,23 @@ import {
   COLORS_DEFAULT,
   DefaultBlockSchema,
   DefaultProps,
+  pageBreakSchema,
+  StyledText,
   UnreachableCaseError,
 } from "@blocknote/core";
+import { getImageDimensions } from "@shared/util/imageUtil.js";
 import {
   CheckBox,
   Table as DocxTable,
   ExternalHyperlink,
-  IParagraphOptions,
   ImageRun,
+  IParagraphOptions,
+  PageBreak,
   Paragraph,
   ParagraphChild,
   ShadingType,
   TextRun,
 } from "docx";
-import { getImageDimensions } from "../imageUtil.js";
 import { Table } from "../util/Table.js";
 
 function blockPropsToStyles(
@@ -55,7 +58,7 @@ function blockPropsToStyles(
   };
 }
 export const docxBlockMappingForDefaultSchema: BlockMapping<
-  DefaultBlockSchema,
+  DefaultBlockSchema & typeof pageBreakSchema.blockSchema,
   any,
   any,
   | Promise<Paragraph[] | Paragraph | DocxTable>
@@ -131,17 +134,29 @@ export const docxBlockMappingForDefaultSchema: BlockMapping<
       ...caption(block.props, exporter),
     ];
   },
-  // TODO
-  codeBlock: (block, exporter) => {
+  codeBlock: (block) => {
+    const textContent = (block.content as StyledText<any>[])[0]?.text || "";
+
     return new Paragraph({
-      // ...blockPropsToStyles(block.props, exporter.options.colors),
       style: "Codeblock",
-      children: exporter.transformInlineContent(block.content),
-      // children: [
-      //   new TextRun({
-      //     text: block..type + " not implemented",
-      //   }),
-      // ],
+      shading: {
+        type: ShadingType.SOLID,
+        fill: "161616",
+        color: "161616",
+      },
+      children: [
+        ...textContent.split("\n").map((line, index) => {
+          return new TextRun({
+            text: line,
+            break: index > 0 ? 1 : 0,
+          });
+        }),
+      ],
+    });
+  },
+  pageBreak: () => {
+    return new Paragraph({
+      children: [new PageBreak()],
     });
   },
   image: async (block, exporter) => {

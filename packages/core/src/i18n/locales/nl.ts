@@ -50,6 +50,12 @@ export const nl: Dictionary = {
       aliases: ["code", "pre"],
       group: "Basisblokken",
     },
+    page_break: {
+      title: "Pagina-einde",
+      subtext: "Paginascheiding",
+      aliases: ["page", "break", "separator", "pagina", "scheiding"],
+      group: "Basisblokken",
+    },
     table: {
       title: "Tabel",
       subtext: "Gebruikt voor tabellen",
@@ -124,6 +130,9 @@ export const nl: Dictionary = {
     bulletListItem: "Lijst",
     numberedListItem: "Lijst",
     checkListItem: "Lijst",
+    new_comment: "Schrijf een reactie...",
+    edit_comment: "Reactie bewerken...",
+    comment_reply: "Reactie toevoegen...",
   },
   file_blocks: {
     image: {
@@ -147,6 +156,8 @@ export const nl: Dictionary = {
   drag_handle: {
     delete_menuitem: "Verwijder",
     colors_menuitem: "Kleuren",
+    header_row_menuitem: "Kopregel",
+    header_column_menuitem: "Kopkolom",
   },
   table_handle: {
     delete_column_menuitem: "Verwijder kolom",
@@ -155,6 +166,9 @@ export const nl: Dictionary = {
     add_right_menuitem: "Voeg kolom rechts toe",
     add_above_menuitem: "Voeg rij boven toe",
     add_below_menuitem: "Voeg rij onder toe",
+    split_cell_menuitem: "Splits cel",
+    merge_cells_menuitem: "Voeg cellen samen",
+    background_color_menuitem: "Achtergrondkleur wijzigen",
   },
   suggestion_menu: {
     no_items_title: "Geen items gevonden",
@@ -269,6 +283,12 @@ export const nl: Dictionary = {
     align_justify: {
       tooltip: "Tekst uitvullen",
     },
+    table_cell_merge: {
+      tooltip: "Voeg cellen samen",
+    },
+    comment: {
+      tooltip: "Commentaar toevoegen",
+    },
   },
   file_panel: {
     upload: {
@@ -306,6 +326,18 @@ export const nl: Dictionary = {
     form: {
       title_placeholder: "Bewerk titel",
       url_placeholder: "Bewerk URL",
+    },
+  },
+  comments: {
+    actions: {
+      add_reaction: "Reactie toevoegen",
+      resolve: "Oplossen",
+      edit_comment: "Reactie bewerken",
+      delete_comment: "Reactie verwijderen",
+      more_actions: "Meer acties",
+    },
+    reactions: {
+      reacted_by: "Gereageerd door",
     },
   },
   generic: {

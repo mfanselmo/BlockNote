@@ -65,9 +65,9 @@
         }
       },
       {
-        "projectSlug": "all-blocks",
-        "fullSlug": "basic/all-blocks",
-        "pathFromRoot": "examples/01-basic/04-all-blocks",
+        "projectSlug": "default-blocks",
+        "fullSlug": "basic/default-blocks",
+        "pathFromRoot": "examples/01-basic/04-default-blocks",
         "config": {
           "playground": true,
           "docs": true,
@@ -76,10 +76,7 @@
             "Basic",
             "Blocks",
             "Inline Content"
-          ],
-          "dependencies": {
-            "@blocknote/xl-multi-column": "latest"
-          } as any
+          ]
         },
         "title": "Default Schema Showcase",
         "group": {
@@ -212,6 +209,24 @@
           ]
         },
         "title": "Change placeholder text",
+        "group": {
+          "pathFromRoot": "examples/01-basic",
+          "slug": "basic"
+        }
+      },
+      {
+        "projectSlug": "multi-editor",
+        "fullSlug": "basic/multi-editor",
+        "pathFromRoot": "examples/01-basic/12-multi-editor",
+        "config": {
+          "playground": true,
+          "docs": true,
+          "author": "areknawo",
+          "tags": [
+            "Basic"
+          ]
+        },
+        "title": "Multi-Editor Setup",
         "group": {
           "pathFromRoot": "examples/01-basic",
           "slug": "basic"
@@ -643,6 +658,27 @@
         }
       },
       {
+        "projectSlug": "advanced-tables",
+        "fullSlug": "ui-components/advanced-tables",
+        "pathFromRoot": "examples/03-ui-components/15-advanced-tables",
+        "config": {
+          "playground": true,
+          "docs": true,
+          "author": "nperez0111",
+          "tags": [
+            "Intermediate",
+            "UI Components",
+            "Tables",
+            "Appearance & Styling"
+          ]
+        },
+        "title": "Advanced Tables",
+        "group": {
+          "pathFromRoot": "examples/03-ui-components",
+          "slug": "ui-components"
+        }
+      },
+      {
         "projectSlug": "link-toolbar-buttons",
         "fullSlug": "ui-components/link-toolbar-buttons",
         "pathFromRoot": "examples/03-ui-components/link-toolbar-buttons",
@@ -862,7 +898,7 @@
           ],
           "dependencies": {
             "@blocknote/xl-pdf-exporter": "latest",
-            "@react-pdf/renderer": "^4.0.0"
+            "@react-pdf/renderer": "^4.3.0"
           } as any,
           "pro": true
         },
@@ -890,6 +926,28 @@
           "pro": true
         },
         "title": "Exporting documents to .docx (Office Open XML)",
+        "group": {
+          "pathFromRoot": "examples/05-interoperability",
+          "slug": "interoperability"
+        }
+      },
+      {
+        "projectSlug": "converting-blocks-to-odt",
+        "fullSlug": "interoperability/converting-blocks-to-odt",
+        "pathFromRoot": "examples/05-interoperability/07-converting-blocks-to-odt",
+        "config": {
+          "playground": true,
+          "docs": true,
+          "author": "areknawo",
+          "tags": [
+            ""
+          ],
+          "dependencies": {
+            "@blocknote/xl-odt-exporter": "latest"
+          } as any,
+          "pro": true
+        },
+        "title": "Exporting documents to .odt (Open Document Text)",
         "group": {
           "pathFromRoot": "examples/05-interoperability",
           "slug": "interoperability"
@@ -1118,6 +1176,30 @@
           } as any
         },
         "title": "Collaborative Editing with Y-Sweet",
+        "group": {
+          "pathFromRoot": "examples/07-collaboration",
+          "slug": "collaboration"
+        }
+      },
+      {
+        "projectSlug": "comments",
+        "fullSlug": "collaboration/comments",
+        "pathFromRoot": "examples/07-collaboration/04-comments",
+        "config": {
+          "playground": true,
+          "docs": true,
+          "author": "yousefed",
+          "tags": [
+            "Advanced",
+            "Comments",
+            "Collaboration"
+          ],
+          "dependencies": {
+            "@y-sweet/react": "^0.6.3",
+            "@mantine/core": "^7.10.1"
+          } as any
+        },
+        "title": "Comments & Threads",
         "group": {
           "pathFromRoot": "examples/07-collaboration",
           "slug": "collaboration"

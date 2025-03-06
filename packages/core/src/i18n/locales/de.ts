@@ -56,6 +56,12 @@ export const de = {
       aliases: ["code", "pre"],
       group: "Grundlegende blöcke",
     },
+    page_break: {
+      title: "Seitenumbruch",
+      subtext: "Seitentrenner",
+      aliases: ["page", "break", "separator", "seitenumbruch", "trenner"],
+      group: "Grundlegende Blöcke",
+    },
     table: {
       title: "Tabelle",
       subtext: "Tabelle mit editierbaren Zellen",
@@ -123,6 +129,9 @@ export const de = {
     bulletListItem: "Liste",
     numberedListItem: "Liste",
     checkListItem: "Liste",
+    new_comment: "Einen Kommentar schreiben...",
+    edit_comment: "Kommentar bearbeiten...",
+    comment_reply: "Kommentar hinzufügen...",
   },
   file_blocks: {
     image: {
@@ -267,6 +276,9 @@ export const de = {
     align_justify: {
       tooltip: "Text Blocksatz",
     },
+    comment: {
+      tooltip: "Kommentar hinzufügen",
+    },
   },
   file_panel: {
     upload: {
@@ -304,6 +316,18 @@ export const de = {
     form: {
       title_placeholder: "Titel bearbeiten",
       url_placeholder: "URL bearbeiten",
+    },
+  },
+  comments: {
+    actions: {
+      add_reaction: "Reaktion hinzufügen",
+      resolve: "Lösen",
+      edit_comment: "Kommentar bearbeiten",
+      delete_comment: "Kommentar löschen",
+      more_actions: "Weitere Aktionen",
+    },
+    reactions: {
+      reacted_by: "Reagiert von",
     },
   },
   generic: {

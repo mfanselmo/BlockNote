@@ -6,16 +6,22 @@ import {
   DefaultInlineContentSchema,
   DefaultStyleSchema,
 } from "../../../blocks/defaultBlocks.js";
+import {
+  pageBreakSchema,
+  withPageBreak,
+} from "../../../blocks/PageBreakBlockContent/schema.js";
 import { BlockNoteEditor } from "../../../editor/BlockNoteEditor.js";
+import { BlockNoteSchema } from "../../../editor/BlockNoteSchema.js";
 
 export const defaultSchemaTestCases: EditorTestCases<
-  DefaultBlockSchema,
+  DefaultBlockSchema & typeof pageBreakSchema.blockSchema,
   DefaultInlineContentSchema,
   DefaultStyleSchema
 > = {
   name: "default schema",
   createEditor: () => {
     return BlockNoteEditor.create({
+      schema: withPageBreak(BlockNoteSchema.create()),
       uploadFile: uploadToTmpFilesDotOrg_DEV_ONLY,
     });
   },
@@ -203,6 +209,23 @@ export const defaultSchemaTestCases: EditorTestCases<
       ],
     },
     {
+      name: "codeBlock/contains-newlines",
+      blocks: [
+        {
+          type: "codeBlock",
+          content: "const hello = 'world';\nconsole.log(hello);\n",
+        },
+      ],
+    },
+    {
+      name: "pageBreak/basic",
+      blocks: [
+        {
+          type: "pageBreak",
+        },
+      ],
+    },
+    {
       name: "file/button",
       blocks: [
         {
@@ -368,13 +391,115 @@ export const defaultSchemaTestCases: EditorTestCases<
             type: "tableContent",
             rows: [
               {
-                cells: ["Table Cell", "Table Cell", "Table Cell"],
+                cells: [
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                ],
               },
               {
-                cells: ["Table Cell", "Table Cell", "Table Cell"],
+                cells: [
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                ],
               },
               {
-                cells: ["Table Cell", "Table Cell", "Table Cell"],
+                cells: [
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                ],
               },
             ],
           },
@@ -391,13 +516,115 @@ export const defaultSchemaTestCases: EditorTestCases<
             columnWidths: [100, 200, 300],
             rows: [
               {
-                cells: ["Table Cell", "Table Cell", "Table Cell"],
+                cells: [
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                ],
               },
               {
-                cells: ["Table Cell", "Table Cell", "Table Cell"],
+                cells: [
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                ],
               },
               {
-                cells: ["Table Cell", "Table Cell", "Table Cell"],
+                cells: [
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                ],
               },
             ],
           },
@@ -414,13 +641,582 @@ export const defaultSchemaTestCases: EditorTestCases<
             columnWidths: [100, undefined, 300],
             rows: [
               {
-                cells: ["Table Cell", "Table Cell", "Table Cell"],
+                cells: [
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                ],
               },
               {
-                cells: ["Table Cell", "Table Cell", "Table Cell"],
+                cells: [
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                ],
               },
               {
-                cells: ["Table Cell", "Table Cell", "Table Cell"],
+                cells: [
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      ],
+    },
+    {
+      name: "table/mixedCellColors",
+      blocks: [
+        {
+          type: "table",
+          content: {
+            type: "tableContent",
+            columnWidths: [100, undefined, 300],
+            rows: [
+              {
+                cells: [
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "red",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "blue",
+                    },
+                  },
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "blue",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "yellow",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "red",
+                    },
+                  },
+                ],
+              },
+              {
+                cells: [
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                ],
+              },
+              {
+                cells: [
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      ],
+    },
+    {
+      name: "table/mixedRowspansAndColspans",
+      blocks: [
+        {
+          type: "table",
+          content: {
+            type: "tableContent",
+            columnWidths: [100, 200, 300],
+            rows: [
+              {
+                cells: [
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "red",
+                      colspan: 2,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "blue",
+                    },
+                  },
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "yellow",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "red",
+                    },
+                  },
+                ],
+              },
+              {
+                cells: [
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 2,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 2,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                ],
+              },
+              {
+                cells: [
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      ],
+    },
+    {
+      name: "table/headerRows",
+      blocks: [
+        {
+          type: "table",
+          content: {
+            headerRows: 1,
+            type: "tableContent",
+            rows: [
+              {
+                cells: [
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                ],
+              },
+              {
+                cells: [
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                ],
+              },
+              {
+                cells: [
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      ],
+    },
+    {
+      name: "table/headerCols",
+      blocks: [
+        {
+          type: "table",
+          content: {
+            headerCols: 1,
+            type: "tableContent",
+            rows: [
+              {
+                cells: [
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                ],
+              },
+              {
+                cells: [
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                ],
+              },
+              {
+                cells: [
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                  {
+                    type: "tableCell",
+                    content: ["Table Cell"],
+                    props: {
+                      backgroundColor: "default",
+                      colspan: 1,
+                      rowspan: 1,
+                      textAlignment: "left",
+                      textColor: "default",
+                    },
+                  },
+                ],
               },
             ],
           },

@@ -4,7 +4,11 @@ import { defineConfig } from "vite";
 import pkg from "./package.json";
 // import eslintPlugin from "vite-plugin-eslint";
 
-const deps = Object.keys(pkg.dependencies);
+const deps = Object.keys({
+  ...pkg.dependencies,
+  ...pkg.peerDependencies,
+  ...pkg.devDependencies,
+});
 
 // https://vitejs.dev/config/
 export default defineConfig((conf) => ({
@@ -26,9 +30,13 @@ export default defineConfig((conf) => ({
   build: {
     sourcemap: true,
     lib: {
-      entry: path.resolve(__dirname, "src/index.ts"),
+      entry: {
+        "blocknote-server-util": path.resolve(__dirname, "src/index.ts"),
+      },
       name: "blocknote-server-util",
-      fileName: "blocknote-server-util",
+      formats: ["es", "cjs"],
+      fileName: (format, entryName) =>
+        format === "es" ? `${entryName}.js` : `${entryName}.cjs`,
     },
     rollupOptions: {
       // make sure to externalize deps that shouldn't be bundled
@@ -37,7 +45,16 @@ export default defineConfig((conf) => ({
         if (deps.includes(source)) {
           return true;
         }
-        return source.startsWith("prosemirror-");
+
+        if (source === "react/jsx-runtime") {
+          return true;
+        }
+
+        if (source.startsWith("prosemirror-")) {
+          return true;
+        }
+
+        return false;
       },
       output: {
         // Provide global variables to use in the UMD build

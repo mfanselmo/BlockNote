@@ -1,4 +1,4 @@
-import { Mark, Node, Schema } from "@tiptap/pm/model";
+import { Attrs, Fragment, Mark, Node, Schema } from "@tiptap/pm/model";
 
 import UniqueID from "../../extensions/UniqueID/UniqueID.js";
 import type {
@@ -16,7 +16,9 @@ import {
   isPartialLinkInlineContent,
   isStyledTextInlineContent,
 } from "../../schema/inlineContent/types.js";
+import { getColspan, isPartialTableCell } from "../../util/table.js";
 import { UnreachableCaseError } from "../../util/typescript.js";
+import { getAbsoluteTableCells } from "../blockManipulation/tables/tables.js";
 
 /**
  * Convert a StyledText inline element to a
@@ -25,7 +27,8 @@ import { UnreachableCaseError } from "../../util/typescript.js";
 function styledTextToNodes<T extends StyleSchema>(
   styledText: StyledText<T>,
   schema: Schema,
-  styleSchema: T
+  styleSchema: T,
+  blockType?: string
 ): Node[] {
   const marks: Mark[] = [];
 
@@ -42,6 +45,12 @@ function styledTextToNodes<T extends StyleSchema>(
     } else {
       throw new UnreachableCaseError(config.propSchema);
     }
+  }
+
+  const parseHardBreaks = !blockType || !schema.nodes[blockType].spec.code;
+
+  if (!parseHardBreaks) {
+    return [schema.text(styledText.text, marks)];
   }
 
   return (
@@ -96,7 +105,8 @@ function linkToNodes(
 function styledTextArrayToNodes<S extends StyleSchema>(
   content: string | StyledText<S>[],
   schema: Schema,
-  styleSchema: S
+  styleSchema: S,
+  blockType?: string
 ): Node[] {
   const nodes: Node[] = [];
 
@@ -105,14 +115,17 @@ function styledTextArrayToNodes<S extends StyleSchema>(
       ...styledTextToNodes(
         { type: "text", text: content, styles: {} },
         schema,
-        styleSchema
+        styleSchema,
+        blockType
       )
     );
     return nodes;
   }
 
   for (const styledText of content) {
-    nodes.push(...styledTextToNodes(styledText, schema, styleSchema));
+    nodes.push(
+      ...styledTextToNodes(styledText, schema, styleSchema, blockType)
+    );
   }
   return nodes;
 }
@@ -126,17 +139,22 @@ export function inlineContentToNodes<
 >(
   blockContent: PartialInlineContent<I, S>,
   schema: Schema,
-  styleSchema: S
+  styleSchema: S,
+  blockType?: string
 ): Node[] {
   const nodes: Node[] = [];
 
   for (const content of blockContent) {
     if (typeof content === "string") {
-      nodes.push(...styledTextArrayToNodes(content, schema, styleSchema));
+      nodes.push(
+        ...styledTextArrayToNodes(content, schema, styleSchema, blockType)
+      );
     } else if (isPartialLinkInlineContent(content)) {
       nodes.push(...linkToNodes(content, schema, styleSchema));
     } else if (isStyledTextInlineContent(content)) {
-      nodes.push(...styledTextArrayToNodes([content], schema, styleSchema));
+      nodes.push(
+        ...styledTextArrayToNodes([content], schema, styleSchema, blockType)
+      );
     } else {
       nodes.push(
         blockOrInlineContentToContentNode(content, schema, styleSchema)
@@ -158,34 +176,75 @@ export function tableContentToNodes<
   styleSchema: StyleSchema
 ): Node[] {
   const rowNodes: Node[] = [];
+  // Header rows and columns are used to determine the type of the cell
+  // If headerRows is 1, then the first row is a header row
+  const headerRows = new Array(tableContent.headerRows ?? 0).fill(true);
+  // If headerCols is 1, then the first column is a header column
+  const headerCols = new Array(tableContent.headerCols ?? 0).fill(true);
 
-  for (const row of tableContent.rows) {
+  const columnWidths: (number | undefined)[] = tableContent.columnWidths ?? [];
+
+  for (let rowIndex = 0; rowIndex < tableContent.rows.length; rowIndex++) {
+    const row = tableContent.rows[rowIndex];
     const columnNodes: Node[] = [];
-    for (let i = 0; i < row.cells.length; i++) {
-      const cell = row.cells[i];
-      let pNode: Node;
+    const isHeaderRow = headerRows[rowIndex];
+    for (let cellIndex = 0; cellIndex < row.cells.length; cellIndex++) {
+      const cell = row.cells[cellIndex];
+      const isHeaderCol = headerCols[cellIndex];
+      /**
+       * The attributes of the cell to apply to the node
+       */
+      const attrs: Attrs | undefined = undefined;
+      /**
+       * The content of the cell to apply to the node
+       */
+      let content: Fragment | Node | readonly Node[] | null = null;
+
+      // Colwidths are absolutely referenced to the table, so we need to resolve the relative cell index to the absolute cell index
+      const absoluteCellIndex = getAbsoluteTableCells(
+        {
+          row: rowIndex,
+          col: cellIndex,
+        },
+        { type: "table", content: tableContent } as any
+      );
+
+      // Assume the column width is the width of the cell at the absolute cell index
+      let colwidth: (number | undefined)[] | null = columnWidths[
+        absoluteCellIndex.col
+      ]
+        ? [columnWidths[absoluteCellIndex.col]]
+        : null;
+
       if (!cell) {
-        pNode = schema.nodes["tableParagraph"].createChecked({});
+        // No-op
       } else if (typeof cell === "string") {
-        pNode = schema.nodes["tableParagraph"].createChecked(
-          {},
-          schema.text(cell)
-        );
+        content = schema.text(cell);
+      } else if (isPartialTableCell(cell)) {
+        if (cell.content) {
+          content = inlineContentToNodes(cell.content, schema, styleSchema);
+        }
+        const colspan = getColspan(cell);
+
+        if (colspan > 1) {
+          // If the cell has a > 1 colspan, we need to get the column width for each cell in the span
+          colwidth = new Array(colspan).fill(false).map((_, i) => {
+            // Starting from the absolute column index, get the column width for each cell in the span
+            return columnWidths[absoluteCellIndex.col + i] ?? undefined;
+          });
+        }
       } else {
-        const textNodes = inlineContentToNodes(cell, schema, styleSchema);
-        pNode = schema.nodes["tableParagraph"].createChecked({}, textNodes);
+        content = inlineContentToNodes(cell, schema, styleSchema);
       }
 
-      const cellNode = schema.nodes["tableCell"].createChecked(
+      const cellNode = schema.nodes[
+        isHeaderCol || isHeaderRow ? "tableHeader" : "tableCell"
+      ].createChecked(
         {
-          // The colwidth array should have multiple values when the colspan of
-          // a cell is greater than 1. However, this is not yet implemented so
-          // we can always assume a length of 1.
-          colwidth: tableContent.columnWidths?.[i]
-            ? [tableContent.columnWidths[i]]
-            : null,
+          ...(isPartialTableCell(cell) ? cell.props : {}),
+          colwidth,
         },
-        pNode
+        schema.nodes["tableParagraph"].createChecked(attrs, content)
       );
       columnNodes.push(cellNode);
     }
@@ -217,10 +276,20 @@ function blockOrInlineContentToContentNode(
   if (!block.content) {
     contentNode = schema.nodes[type].createChecked(block.props);
   } else if (typeof block.content === "string") {
-    const nodes = inlineContentToNodes([block.content], schema, styleSchema);
+    const nodes = inlineContentToNodes(
+      [block.content],
+      schema,
+      styleSchema,
+      type
+    );
     contentNode = schema.nodes[type].createChecked(block.props, nodes);
   } else if (Array.isArray(block.content)) {
-    const nodes = inlineContentToNodes(block.content, schema, styleSchema);
+    const nodes = inlineContentToNodes(
+      block.content,
+      schema,
+      styleSchema,
+      type
+    );
     contentNode = schema.nodes[type].createChecked(block.props, nodes);
   } else if (block.content.type === "tableContent") {
     const nodes = tableContentToNodes(block.content, schema, styleSchema);
@@ -253,9 +322,11 @@ export function blockToNode(
     }
   }
 
-  const nodeTypeCorrespondingToBlock = schema.nodes[block.type];
+  const isBlockContent =
+    !block.type || // can happen if block.type is not defined (this should create the default node)
+    schema.nodes[block.type].isInGroup("blockContent");
 
-  if (nodeTypeCorrespondingToBlock.isInGroup("blockContent")) {
+  if (isBlockContent) {
     // Blocks with a type that matches "blockContent" group always need to be wrapped in a blockContainer
 
     const contentNode = blockOrInlineContentToContentNode(
@@ -276,7 +347,7 @@ export function blockToNode(
       },
       groupNode ? [contentNode, groupNode] : contentNode
     );
-  } else if (nodeTypeCorrespondingToBlock.isInGroup("bnBlock")) {
+  } else if (schema.nodes[block.type].isInGroup("bnBlock")) {
     // this is a bnBlock node like Column or ColumnList that directly translates to a prosemirror node
     return schema.nodes[block.type].createChecked(
       {

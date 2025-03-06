@@ -1,11 +1,12 @@
+import { withSentryConfig } from "@sentry/nextjs";
 /** @type {import('next').NextConfig} */
 import analyzer from "@next/bundle-analyzer";
 import nextra from "nextra";
-import path from "path";
-import { fileURLToPath } from "url";
+// import path from "path";
+// import { fileURLToPath } from "url";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
 
 const withNextra = nextra({
   theme: "nextra-theme-docs",
@@ -118,16 +119,34 @@ const nextConfig = withAnalyzer(
         destination: "/docs/advanced/vanilla-js",
         permanent: true,
       },
+      {
+        source: "/examples/basic/all-blocks",
+        destination: "/examples/basic/default-blocks",
+        permanent: true,
+      },
+      {
+        source: "/docs/advanced/real-time-collaboration",
+        destination: "/docs/collaboration",
+        permanent: true,
+      },
     ],
     experimental: {
       externalDir: true,
     },
-    webpack: (config, { isServer }) => {
+    webpack: (config) => {
       config.externals.push({
         // "@blocknote/core": "bncore",
         // "@blocknote/react": "bnreact",
         // ...
       });
+
+      // https://github.com/vercel/next.js/issues/59744#issuecomment-2442603644
+      config.resolve.extensionAlias = {
+        ".js": [".js", ".ts"],
+        ".mjs": [".mjs", ".mts"],
+        ".cjs": [".cjs", ".cts"],
+        ".jsx": [".jsx", ".tsx"],
+      };
 
       if (config.mode === "development") {
         // makes sure the local blocknote dependencies get their own chunk, and are not included in every page bundle
@@ -165,4 +184,40 @@ const nextConfig = withAnalyzer(
   }),
 );
 
-export default nextConfig;
+export default withSentryConfig(nextConfig, {
+  // For all available options, see:
+  // https://www.npmjs.com/package/@sentry/webpack-plugin#options
+
+  org: "blocknote-js",
+  project: "website",
+
+  // Only print logs for uploading source maps in CI
+  silent: !process.env.CI,
+
+  // For all available options, see:
+  // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
+
+  // Upload a larger set of source maps for prettier stack traces (increases build time)
+  widenClientFileUpload: true,
+
+  // Automatically annotate React components to show their full name in breadcrumbs and session replay
+  reactComponentAnnotation: {
+    enabled: false,
+  },
+
+  // Route browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers.
+  // This can increase your server load as well as your hosting bill.
+  // Note: Check that the configured route will not match with your Next.js middleware, otherwise reporting of client-
+  // side errors will fail.
+  tunnelRoute: "/monitoring",
+
+  // Automatically tree-shake Sentry logger statements to reduce bundle size
+  disableLogger: true,
+
+  // Enables automatic instrumentation of Vercel Cron Monitors. (Does not yet work with App Router route handlers.)
+  // See the following for more information:
+  // https://docs.sentry.io/product/crons/
+  // https://vercel.com/docs/cron-jobs
+  automaticVercelMonitors: true,
+  telemetry: false,
+});

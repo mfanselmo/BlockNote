@@ -141,7 +141,8 @@ function updateBlockContentNode<
       content = inlineContentToNodes(
         [block.content],
         state.schema,
-        editor.schema.styleSchema
+        editor.schema.styleSchema,
+        newNodeType.name
       );
     } else if (Array.isArray(block.content)) {
       // Adds a text node with the provided styles converted into marks to the content,
@@ -149,7 +150,8 @@ function updateBlockContentNode<
       content = inlineContentToNodes(
         block.content,
         state.schema,
-        editor.schema.styleSchema
+        editor.schema.styleSchema,
+        newNodeType.name
       );
     } else if (block.content.type === "tableContent") {
       content = tableContentToNodes(
@@ -220,7 +222,7 @@ function updateChildren<
   editor: BlockNoteEditor<BSchema, I, S>,
   blockInfo: BlockInfo
 ) {
-  if (block.children !== undefined) {
+  if (block.children !== undefined && block.children.length > 0) {
     const childNodes = block.children.map((child) => {
       return blockToNode(child, state.schema, editor.schema.styleSchema);
     });

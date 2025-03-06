@@ -10,7 +10,7 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "module": "ESNext",
-    "moduleResolution": "Node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
@@ -23,8 +23,11 @@
     { "path": "./tsconfig.node.json" },
     { "path": "../packages/core/" },
     { "path": "../packages/react/" },
+    { "path": "../packages/ariakit/" },
+    { "path": "../packages/mantine/" },
     { "path": "../packages/shadcn/" },
     { "path": "../packages/xl-pdf-exporter/" },
+    { "path": "../packages/xl-odt-exporter/" },
     { "path": "../packages/xl-docx-exporter/" },
     { "path": "../packages/xl-multi-column/" }
   ]
